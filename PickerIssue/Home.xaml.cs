@@ -1,18 +1,1 @@
-﻿using System;
-using System.Collections.Generic;
-using Xamarin.Forms;
-using System.Threading.Tasks;
-
-namespace PickerIssue
-{	
-	public partial class Home : ContentPage
-	{	
-		public Home ()
-		{
-      System.Diagnostics.Debug.WriteLine("Home::ctor() - Enter");
-			InitializeComponent ();
-      System.Diagnostics.Debug.WriteLine("Home::ctor() - Exit");
-		}
-  }
-}
-
+﻿using System; using System.Collections.Generic; using Xamarin.Forms; using System.Threading.Tasks;  namespace PickerIssue {   public partial class Home : ContentPage   {     public Home()     {       System.Diagnostics.Debug.WriteLine ("Home::ctor() - Enter");       InitializeComponent ();       System.Diagnostics.Debug.WriteLine ("Home::ctor() - attaching event handler");       picker.SelectedIndexChanged += (o, e) => {         status.Text = String.Format ("SelectedIndexChanged: {0}", picker.SelectedIndex);       };       System.Diagnostics.Debug.WriteLine ("Home::ctor() - Exit");       FetchItemsAsync ();     }      private async Task FetchItemsAsync()     {       var items = await Task<IEnumerable<String>>.Factory.StartNew (() => {         var t = Task.Delay(500);         t.Start();         t.Wait();         return new String[] { "One", "Two", "Three", "Four" };       });       foreach (var item in items)       {         picker.Items.Add (item);       }       picker.SelectedIndex = -1;     }   } }
